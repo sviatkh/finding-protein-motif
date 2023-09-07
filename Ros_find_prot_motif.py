@@ -3,7 +3,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 import re
 
-
+# main function
 def main():
     # ask for the id numbers
     id = list(input("List the ID numbers: "))
