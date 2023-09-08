@@ -3,7 +3,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 import re
 
-#main function
+
 def main():
     # ask for the id numbers
     id = list(input("List the ID numbers: "))
@@ -13,7 +13,8 @@ def main():
     # make_dictionary(key, value)
     print(key, "\n", value)
 # get the sequence from the database
-
+key = []
+value = []
 def get_seq(id_list): #function for get the id-s sequences 
     Entrez.email = "sviatoslavkharuk@gmail.com" 
     with Entrez.efetch(db = "protein", 
@@ -23,10 +24,12 @@ def get_seq(id_list): #function for get the id-s sequences
         for aa_record in SeqIO.parse(protein, "genbank"): # reading the sequence 
             print(f"Seq record id is: {aa_record.id}")
             print(aa_record.seq)
-            seq_aa = str(aa_record.seq) 
+            seq_aa = str(aa_record.seq)
+            key.append(aa_record)
+            value.append(seq_aa)
             # print(len(seq_aa))
          ## maybe I should return name Id as key and sequence as value?
-            return aa_record.id, seq_aa
+            return key, value
 
 ## loop for parsing and saving the sequences in dictionary
 # def make_dictionary(key, value):
