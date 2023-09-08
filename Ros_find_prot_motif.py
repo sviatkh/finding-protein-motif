@@ -6,31 +6,22 @@ import re
 
 def main():
     # ask for the id numbers
-    id = list(input("List the ID numbers: "))
+    id_list = input("Enter a Id number: ").strip().split()
     # assign a key and value into the new variables
-    key, value = get_seq(id)
+    key, value = get_seq(id_list)
+    print(key, value)
     # using the function and key and values create a dictionary 
-    # make_dictionary(key, value)
-    print(key, "\n", value)
-# get the sequence from the database
-key = []
-value = []
+
 def get_seq(id_list): #function for get the id-s sequences 
     Entrez.email = "sviatoslavkharuk@gmail.com" 
     with Entrez.efetch(db = "protein", 
                     id = id_list,
                     rettype = "gb",
                     retmode = "text") as protein:
-        for aa_record in SeqIO.parse(protein, "genbank"): # reading the sequence 
-            print(f"Seq record id is: {aa_record.id}")
-            print(aa_record.seq)
-            seq_aa = str(aa_record.seq)
-            key.append(aa_record)
-            value.append(seq_aa)
-            # print(len(seq_aa))
-         ## maybe I should return name Id as key and sequence as value?
+            aa_records = list(SeqIO.parse(protein, "genbank")) # convert to list for later use list comrehensions
+            key = [aa_record.id for aa_record in aa_records]
+            value = [str(aa_record.seq) for aa_record in aa_records]
             return key, value
-
 ## loop for parsing and saving the sequences in dictionary
 # def make_dictionary(key, value):
     
