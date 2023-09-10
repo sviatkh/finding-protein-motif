@@ -10,7 +10,9 @@ def main():
     # assign a key and value into the new variables
     key_list, value_list = get_seq(id_list)
     # using the function and key and values create a dictionary 
-    make_dictionary(key_list, value_list)
+    id_dictionary = make_dictionary(key_list, value_list)
+    find_pattern(id_dictionary)
+
 
 def get_seq(id_list): #function for get the id-s sequences 
     Entrez.email = "sviatoslavkharuk@gmail.com" 
@@ -24,23 +26,21 @@ def get_seq(id_list): #function for get the id-s sequences
             return key, value
 
 ## loop for parsing and saving the sequences in dictionary
-id_dictionary = {}
 def make_dictionary(key_list, value_list):
-     for key in key_list:
-          for value in value_list:
-               id_dictionary[key] = value
+     id_dictionary = {key_list[i]: value_list[i] for i in range(len(key_list))}
+     return id_dictionary
 
 # ## rebuild to work with dictionary
 # # re.expressions for searching the protein motif
-# pattern = r"N[^P][ST]"
+def find_pattern(id_dictionary):
+     pattern = r"N[^P][ST]"
 
-# ## loop for matches in the values
-
-# matches = re.finditer(pattern, reader)
-
-# for match in matches:
-#     position = match.start()
-#     print(position + 1, end=" ")
+## loop for matches in the values
+     for value in id_dictionary.values():
+         matches = re.finditer(pattern, value)
+         for match in matches:
+              position = match.start()
+     print(position + 1, end=" ")
 
 if __name__ == "__main__":
     main()
