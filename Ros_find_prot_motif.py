@@ -2,7 +2,8 @@ from Bio import Entrez
 from Bio import SeqIO
 from Bio.Seq import Seq
 import re
-
+import os
+os.environ['http_proxy'] = 'http://193.62.193.81:80'
 
 def main():
     # ask for the id numbers
@@ -12,7 +13,6 @@ def main():
     # using the function and key and values create a dictionary 
     id_dictionary = make_dictionary(key_list, value_list)
     find_pattern(id_dictionary)
-
 
 def get_seq(id_list): #function for get the id-s sequences 
     Entrez.email = "sviatoslavkharuk@gmail.com" 
@@ -36,11 +36,15 @@ def find_pattern(id_dictionary):
      pattern = r"N[^P][ST]"
 
 ## loop for matches in the values
-     for value in id_dictionary.values():
+     for key, value in id_dictionary.items():
          matches = re.finditer(pattern, value)
+         positions = []
          for match in matches:
               position = match.start()
-     print(position + 1, end=" ")
+              positions.append(str(position + 1)) #convert position to the string and add to the list
+
+         print(key)
+         print(" ".join(positions))
 
 if __name__ == "__main__":
     main()
